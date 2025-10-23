@@ -109,3 +109,57 @@ if result is not None:
     print(f'Элемент {target_value} найден на индексе {result}')
 else:
     print('Элемент не найден')
+
+
+
+
+
+
+
+
+Поиск по Фибоначчи
+import math
+
+# Вспомогательная функция для вычисления наименьшего числа Фибоначчи,
+# которое больше или равно длине массива
+def fibonacci_number_greater_than_or_equal_to_length(length):
+    f1, f2 = 0, 1
+    while f2 < length:
+        temp = f2
+        f2 += f1
+        f1 = temp
+    return f2
+
+# Основной алгоритм поиска по Фибоначчи
+def fibonacci_search(arr, target):
+    m = fibonacci_number_greater_than_or_equal_to_length(len(arr))  # Получаем подходящее число Фибоначчи
+    offset = -1                                                     # Смещение начальной позиции
+    f_minus_two = 0                                                 # F(k-2)
+    f_minus_one = 1                                                 # F(k-1)
+    while m > 1:
+        i = min(offset+f_minus_two, len(arr)-1)                      # Индекс для проверки
+        if arr[i] < target:                                          # Если элемент меньше цели
+            m = f_minus_one                                         # Переходим к следующему числу Фибоначчи
+            f_minus_two = f_minus_one                               # Обновляем предыдущие числа
+            f_minus_one = m - f_minus_two                           # Следующее число Фибоначчи
+            offset = i                                              # Изменяем смещение
+        elif arr[i] > target:                                       # Если элемент больше цели
+            m = f_minus_two                                        # Переход к предыдущему числу Фибоначчи
+            f_minus_one -= f_minus_two                             # Обновляем предыдущее число
+            f_minus_two = m - f_minus_one                          # Новое следующее число Фибоначчи
+        else:                                                       # Если элемент равен цели
+            return i                                                # Возврат индекса
+    # Последний возможный случай сравнения
+    if f_minus_one and arr[offset+1]==target:
+        return offset+1                                             # Проверка последнего возможного места
+    return -1                                                      # Если элемент не найден
+
+# Тестирование
+array = [10, 22, 35, 40, 45, 50, 80, 82, 85, 90, 100]
+search_element = 85
+index = fibonacci_search(array, search_element)
+
+if index != -1:
+    print("Элемент {} найден на индексе {}".format(search_element, index))
+else:
+    print("Элемент не найден")
