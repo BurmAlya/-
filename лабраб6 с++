@@ -55,6 +55,13 @@ void printArray(const int* array, const int size) {
     std::cout << '\n';                        // Новый символ строки после полного вывода массива
 }
 
+Исходный массив:
+64 25 12 22 11 
+Отсортированный массив:
+11 12 22 25 64 
+
+
+[Execution Finished]
 
 
 
@@ -62,10 +69,10 @@ void printArray(const int* array, const int size) {
 
 
 
-
-
+ЗАНОВО
 сортировка пузерек
 // Реализация алгоритма сортировки пузырьком
+#include <iostream> // подключение стандартного ввода-вывода
 void bubbleSort(int* array, const int size) {
     bool swapped;                             // Флаг для отслеживания наличия изменений
     do {
@@ -145,6 +152,11 @@ int main() {
     return 0;                              // успешное завершение программы
 }
 
+Исходный массив: 12 11 13 5 6 
+Отсортированный массив: 5 6 11 12 13 
+
+
+[Execution Finished]
 
 
 
@@ -239,6 +251,13 @@ int main() {
     return 0;
 }
 
+Исходный массив: 
+12 11 13 5 6 7 
+Отсортированный массив: 
+5 6 7 11 12 13 
+
+
+[Execution Finished]
 
 
 
@@ -246,33 +265,6 @@ int main() {
 
 
 
-ПИТОН
-Быстрая сортировка (Quick Sort
-def quick_sort(arr):
-    """
-    Функция осуществляет быструю сортировку массива.
-    :param arr: Список элементов для сортировки
-    :return: Отсортированный список
-    """
-    if len(arr) <= 1:  # Базовый случай: пустой или односимвольный массив уже отсортированы
-        return arr
-    
-    pivot = arr[len(arr) // 2]  # Берём средний элемент массива в качестве опорного
-    
-    # Формируем три списка: элементы меньше опорного, равные и больше опорного
-    less = [x for x in arr if x < pivot]  # Все элементы, меньшие опорного
-    equal = [x for x in arr if x == pivot]  # Все элементы, равные опорному
-    greater = [x for x in arr if x > pivot]  # Все элементы, большие опорного
-    
-    # Рекурсивно сортируем списки "less" и "greater"
-    return quick_sort(less) + equal + quick_sort(greater)
-
-# Тестируем алгоритм
-if __name__ == "__main__":
-    unsorted_list = [3, 6, 8, 10, 1, 2, 1]
-    sorted_list = quick_sort(unsorted_list)
-    print(f'Исходный массив: {unsorted_list}')
-    print(f'Отсортированный массив: {sorted_list}')
 
 
 
@@ -346,13 +338,18 @@ int main() {
     return 0;
 }
 
+Исходный массив: 12 11 13 5 6 7 
+Отсортированный массив: 5 6 7 11 12 13 
+
+
+[Execution Finished]
 
 
 
 
 
 
-
+ЗАНОВО
 последовательный поиск
 #include <iostream>
 #include <vector>
@@ -395,7 +392,7 @@ int main() {
 
 
 
-
+ЗАНОВО
 Интерполирующий поиск
 #include <iostream>
 using namespace std;
