@@ -69,7 +69,7 @@ void printArray(const int* array, const int size) {
 
 
 
-ЗАНОВО
+
 сортировка пузерек
 // Реализация алгоритма сортировки пузырьком
 #include <iostream> // подключение стандартного ввода-вывода
@@ -103,6 +103,11 @@ int main() {
 }
 
 
+Exec error
+/home/compile/online-compile-Cpp.cpp: In function 'int main()':
+/home/compile/online-compile-Cpp.cpp:21:5: error: 'printArray' was not declared in this scope
+   21 |     printArray(data, length);                  // Показываем первоначальный порядок элементов
+      |     ^~~~~
 
 
 
@@ -349,7 +354,7 @@ int main() {
 
 
 
-ЗАНОВО
+
 последовательный поиск
 #include <iostream>
 #include <vector>
@@ -385,14 +390,13 @@ int main() {
     return 0;
 }
 
+Элемент 45 найден на позиции 3.
 
 
 
 
 
 
-
-ЗАНОВО
 Интерполирующий поиск
 #include <iostream>
 using namespace std;
@@ -447,7 +451,7 @@ int main() {
 }
 
 
-
+Элемент 18 найден на индексе 4
 
 
 
