@@ -1,0 +1,51 @@
+Вариант 1: с использованием подстрок (менее эффективный)
+#include <iostream>
+#include <string>
+#include <cctype>
+
+int countVowels(const std::string& s) {
+    // Базовый случай: пустая строка
+    if (s.empty()) {
+        return 0;
+    }
+
+    // Проверяем первый символ
+    char firstChar = std::tolower(s[0]);
+    int isVowel = (firstChar == 'a' || firstChar == 'e' ||
+                   firstChar == 'i' || firstChar == 'o' ||
+                   firstChar == 'u') ? 1 : 0;
+
+    // Рекурсивный вызов для оставшейся подстроки
+    return isVowel + countVowels(s.substr(1));
+}
+
+Вывод
+/usr/sbin/ld: /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o: in function `_start':
+(.text+0x1b): undefined reference to `main'
+collect2: error: ld returned 1 exit status
+
+Вариант 2: с использованием индекса (оптимизированный)
+#include <iostream>
+#include <string>
+#include <cctype>
+
+int countVowels(const std::string& s, int index = 0) {
+    // Базовый случай: вышли за пределы строки
+    if (index >= s.length()) {
+        return 0;
+    }
+
+    // Проверяем текущий символ
+    char currentChar = std::tolower(s[index]);
+    int isVowel = (currentChar == 'a' || currentChar == 'e' ||
+                   currentChar == 'i' || currentChar == 'o' ||
+                   currentChar == 'u') ? 1 : 0;
+
+    // Рекурсивный вызов для следующего индекса
+    return isVowel + countVowels(s, index + 1);
+}
+Вывод
+
+/usr/sbin/ld: /usr/lib/gcc/x86_64-pc-linux-gnu/13.2.1/../../../../lib/Scrt1.o: in function `_start':
+(.text+0x1b): undefined reference to `main'
+collect2: error: ld returned 1 exit status
