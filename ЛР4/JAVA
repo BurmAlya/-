@@ -35,8 +35,8 @@ public class VowelCounter {
 
 
 Вывод
-Main.java:1: error: class VowelCounter is public, should be declared in a file named VowelCounter.java
-public class VowelCounter 
+Количество гласных: 3
+
 
 
 
