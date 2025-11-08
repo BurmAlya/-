@@ -104,6 +104,22 @@ C++
 Преобразуем символ к нижнему регистру.
 Если символ входит в набор гласных (a, e, i, o, u), прибавляем 1.
 Иначе прибавляем 0.
+countVowels("Привет") → вызывает countVowelsRecursive("Привет", 0).
+countVowelsRecursive("Привет", 0):
+index = 0, символ 'П' → не гласная → вызов countVowelsRecursive("Привет", 1).
+countVowelsRecursive("Привет", 1):
+index = 1, символ 'р' → не гласная → вызов countVowelsRecursive("Привет", 2).
+countVowelsRecursive("Привет", 2):
+index = 2, символ 'и' → гласная → 1+ вызов countVowelsRecursive("Привет", 3).
+countVowelsRecursive("Привет", 3):
+index = 3, символ 'в' → не гласная → вызов countVowelsRecursive("Привет", 4).
+countVowelsRecursive("Привет", 4):
+index = 4, символ 'е' → гласная → 1+ вызов countVowelsRecursive("Привет", 5).
+countVowelsRecursive("Привет", 5):
+index = 5, символ 'т' → не гласная → вызов countVowelsRecursive("Привет", 6).
+countVowelsRecursive("Привет", 6):
+index = 6 ≥ length = 6 → базовое условие → возвращаем 0.
+Итог:0+1+1=2.
 Рекурсивный вызов: передаём подстроку без первого символа (s.substr(1)) или увеличиваем индекс на 1 (оптимизированный вариант).
 Суммuруем результат проверки текущего символа и результат рекурсивного вызова.
 Недостатки:
