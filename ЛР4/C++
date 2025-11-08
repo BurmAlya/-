@@ -1,3 +1,54 @@
+#include <iostream>
+#include <string>
+#include <cctype> // для tolower
+
+using namespace std;
+
+// Функция проверки, является ли символ гласной
+bool isVowel(char c) {
+    c = tolower(c); // приводим к нижнему регистру
+    return c == 'а' || c == 'е' || c == 'ё' || c == 'и' ||
+           c == 'о' || c == 'у' || c == 'ы' || c == 'э' ||
+           c == 'ю' || c == 'я';
+}
+
+// Рекурсивная функция подсчёта гласных
+int countVowelsRecursive(const string& str, int index = 0) {
+    // Базовое условие: вышли за границы строки
+    if (index >= str.length()) {
+        return 0;
+    }
+    
+    char currentChar = str[index];
+    
+    // Если текущий символ — гласная, добавляем 1 и продолжаем рекурсию
+    if (isVowel(currentChar)) {
+        return 1 + countVowelsRecursive(str, index + 1);
+    } else {
+        // Иначе просто продолжаем рекурсию
+        return countVowelsRecursive(str, index + 1);
+    }
+}
+
+// Основная функция для вызова (удобный интерфейс)
+int countVowels(const string& str) {
+    if (str.empty()) {
+        return 0;
+    }
+    return countVowelsRecursive(str);
+}
+
+// Пример использования
+int main() {
+    cout << countVowels("Привет") << endl;      // Вывод: 2
+    cout << countVowels("") << endl;            // Вывод: 0
+    cout << countVowels("bcdfg") << endl;     // Вывод: 0
+    cout << countVowels("АЕЁИОУЫЭЮЯ") << endl; // Вывод: 10
+    return 0;
+}
+
+
+Вывод
 
 jdoodle.cpp:10:17: warning: multi-character character constant [-Wmultichar]
    10 |     return c == 'а' || c == 'е' || c == 'ё' || c == 'и' ||
