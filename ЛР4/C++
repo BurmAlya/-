@@ -49,7 +49,8 @@ int main() {
 
 
 Вывод
-
+Введите строку: qwertyujikol
+Количество гласных букв: 4
 jdoodle.cpp:10:17: warning: multi-character character constant [-Wmultichar]
    10 |     return c == 'а' || c == 'е' || c == 'ё' || c == 'и' ||
       |                 ^~~
