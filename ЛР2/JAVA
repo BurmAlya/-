@@ -1,0 +1,64 @@
+Мультисписок (двусвязный список)
+В Java мультисписок реализуется через классы Node и DoublyLinkedList.
+Класс Node представляет отдельный узел списка и содержит:
+поле data для хранения целочисленного значения;
+ссылку prev на предыдущий узел;
+ссылку next на следующий узел.
+Конструктор Node(int data) инициализирует узел:
+задаёт значение data;
+устанавливает prev и next в null (узел пока не связан с другими).
+Класс DoublyLinkedList описывает сам двусвязный список и содержит:
+ссылку head на головной (первый) узел;
+ссылку tail на хвостовой (последний) узел.
+Конструктор DoublyLinkedList() инициализирует пустой список, устанавливая head и tail в null.
+Код реализации:
+public class Node {
+    int data;
+    Node prev;   
+    Node next;
+    
+    public Node(int data) {  
+        this.data = data;       
+        this.prev = null;       
+        this.next = null;       
+    }   
+}
+
+public class DoublyLinkedList {
+    Node head;   
+    Node tail;
+    
+    public DoublyLinkedList() {
+        this.head = null;     
+        this.tail = null;       
+    }   
+}
+Очередь
+В Java очередь реализуется через интерфейс Queue с использованием класса LinkedList. Пример работы:
+Создаётся объект queue типа Queue<String> на базе LinkedList.
+В очередь добавляются строки "Маша", "Катя", "Соня" с помощью метода add().
+Код реализации:
+Queue<String> queue = new LinkedList<>();
+queue.add("Маша");
+queue.add("Катя");
+queue.add("Соня");
+Дек (двусторонняя очередь)
+Для работы с деком используется интерфейс Deque и реализация ArrayDeque. Пример:
+Создаётся объект stack типа Deque<Integer> на базе ArrayDeque.
+В дек добавляются числа 10, 20, 30 с помощью метода push() (добавление в начало).
+Код реализации:
+Deque<Integer> stack = new ArrayDeque<>();
+stack.push(10);
+stack.push(20);
+stack.push(30);
+Приоритетная очередь
+Приоритетная очередь в Java реализуется классом PriorityQueue. По умолчанию элементы упорядочиваются по возрастанию (минимальная куча). Пример работы:
+Создаётся объект minHeap типа PriorityQueue<Integer>.
+В очередь добавляются числа 7, 50, 1, 9 с помощью метода offer().
+При извлечении элементы будут возвращаться в порядке: 1, 7, 9, 50.
+Код реализации:
+PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+minHeap.offer(7);
+minHeap.offer(50);
+minHeap.offer(1);
+minHeap.offer(9);
