@@ -14,8 +14,8 @@
 import random
 import numpy as np
 
-# --- 1. Входные данные: матрица расстояний для 10 городов ---
-# Симметричная матрица (пример)
+ 1. Входные данные: матрица расстояний для 10 городов ---
+ Симметричная матрица (пример)
 DISTANCE_MATRIX = np.array([
     [0,  2,  9,  10, 7,  3,  8,  5,  6,  4],
     [2,  0,  6,  4,  8,  9,  7,  3,  1,  5],
@@ -31,12 +31,12 @@ DISTANCE_MATRIX = np.array([
 
 N_CITIES = DISTANCE_MATRIX.shape[0]  # 10 городов
 
-# --- 2. Параметры генетического алгоритма ---
+2. Параметры генетического алгоритма 
 POPULATION_SIZE = 30
 NUM_GENERATIONS = 100
 MUTATION_RATE = 0.1  # 10% вероятность мутации
 
-# --- 3. Вспомогательные функции ---
+3. Вспомогательные функции 
 
 def calculate_route_cost(route):
     """
@@ -101,37 +101,36 @@ def select_parents(population, costs):
     tournament = random.sample(list(zip(population, costs)), tournament_size)
     winner = min(tournament, key=lambda x: x[1])  # минимальный cost
     return winner[0]
-
-# --- 4. Основной цикл генетического алгоритма ---
+4. Основной цикл генетического алгоритма 
 
 def genetic_algorithm():
-    # Инициализация популяции
+     Инициализация популяции
     population = create_population()
     
     best_route = None
     best_cost = float('inf')
     
     for generation in range(NUM_GENERATIONS):
-        # Вычисляем стоимость каждого маршрута
+         Вычисляем стоимость каждого маршрута
         costs = [calculate_route_cost(individual) for individual in population]
         
-        # Обновляем лучший найденный маршрут
+         Обновляем лучший найденный маршрут
         min_cost = min(costs)
         if min_cost < best_cost:
             best_cost = min_cost
             best_route = population[costs.index(min_cost)]
         
-        # Создаём новое поколение
+         Создаём новое поколение
         new_population = []
         for _ in range(POPULATION_SIZE):
             # Отбираем двух родителей
             parent1 = select_parents(population, costs)
             parent2 = select_parents(population, costs)
             
-            # Кроссовер
+             Кроссовер
             child = order_crossover(parent1, parent2)
             
-            # Мутация
+             Мутация
             child = mutate(child)
             
             new_population.append(child)
@@ -140,7 +139,7 @@ def genetic_algorithm():
     
     return best_route, best_cost
 
-# --- 5. Запуск и вывод результата ---
+ 5. Запуск и вывод результата 
 
 if __name__ == "__main__":
     best_route, best_cost = genetic_algorithm()
