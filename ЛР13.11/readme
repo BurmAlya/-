@@ -1,0 +1,143 @@
+import random
+import numpy as np
+
+# 1. Задаём матрицу расстояний для 10 городов (пример)
+np.random.seed(42)
+n_cities = 10
+distance_matrix = np.random.randint(1, 100, size=(n_cities, n_cities))
+distance_matrix = (distance_matrix + distance_matrix.T) // 2  # симметрия
+np.fill_diagonal(distance_matrix, 0)  # расстояние до себя = 0
+
+print("Матрица расстояний (10×10):")
+print(distance_matrix)
+
+# 2. Функция расчёта длины маршрута
+def calculate_route_length(route, dist_matrix):
+    """
+    Вычисляет полную длину маршрута (с возвратом в стартовый город).
+    Вход: route — список городов [0, 3, 1, ..., 9]
+    Выход: сумма расстояний по маршруту
+    """
+    total = 0
+    for i in range(len(route)):
+        total += dist_matrix[route[i]][route[(i + 1) % len(route)]]
+    return total
+
+# 3. Создание случайной особи (перестановки городов)
+def create_individual(n):
+    """Создаёт случайную перестановку городов от 0 до n-1."""
+    individual = list(range(n))
+    random.shuffle(individual)
+    return individual
+
+# 4. Order Crossover (OX) — основной оператор скрещивания
+def order_crossover(parent1, parent2):
+    """
+    Order Crossover (OX):
+    1. Выбираем случайный сегмент в parent1.
+    2. Копируем его в потомка.
+    3. Остальные города берём из parent2 в порядке их появления, пропуская уже добавленные.
+    """
+    size = len(parent1)
+    child = [-1] * size  # потомок, заполнен -1
+
+    # Выбираем случайный отрезок [start, end]
+    start, end = sorted(random.sample(range(size), 2))
+
+    # Копируем сегмент из parent1 в child
+    child[start:end + 1] = parent1[start:end + 1]
+
+    # Заполняем оставшиеся позиции из parent2 (в порядке появления)
+    pointer = (end + 1) % size
+    for city in parent2:
+        if city not in child:
+            child[pointer] = city
+            pointer = (pointer + 1) % size
+
+    return child
+
+# 5. Мутация: случайный swap двух городов
+def mutate(individual, mutation_rate=0.1):
+    """
+    С вероятностью mutation_rate меняет местами два случайных города.
+    """
+    if random.random() < mutation_rate:
+        i, j = random.sample(range(len(individual)), 2)
+        individual[i], individual[j] = individual[j], individual[i]
+    return individual
+
+# 6. Турнирный отбор (размер турнира = 3)
+def tournament_selection(population, fitnesses, tournament_size=3):
+    """
+    Выбирает одну особь путём турнира из tournament_size особей.
+    Возвращает лучшую по fitness.
+    """
+    selected = random.sample(list(zip(population, fitnesses)), tournament_size)
+    winner = max(selected, key=lambda x: x[1])  # max по fitness
+    return winner[0]
+
+# 7. Основной генетический алгоритм
+def genetic_algorithm_tsp(dist_matrix, n_cities, pop_size=30, n_generations=100):
+    """
+    Генетический алгоритм для TSP.
+    Параметры:
+    - dist_matrix: матрица расстояний
+    - n_cities: число городов
+    - pop_size: размер популяции (30)
+    - n_generations: число поколений (10 packed)
+    """
+    # Инициализация популяции
+    population = [create_individual(n_cities) for _ in range(pop_size)]
+
+    best_route = None
+    best_length = float('inf')  # начальная лучшая длина — бесконечность
+
+    for gen in range(n_generations):
+        # Вычисляем fitness для каждой особи
+        fitnesses = []
+        for route in population:
+            length = calculate_route_length(route, dist_matrix)
+            fitness = 1 / length  # чем короче маршрут, тем выше fitness
+            fitnesses.append(fitness)
+
+            # Обновляем лучшее решение
+            if length < best_length:
+                best_length = length
+                best_route = route.copy()
+
+        # Создаём новое поколение
+        new_population = []
+        for _ in range(pop_size):
+            # Отбираем двух родителей
+            parent1 = tournament_selection(population, fitnesses)
+            parent2 = tournament_selection(population, fitnesses)
+
+            # Применяем кроссовер
+            child = order_crossover(parent1, parent2)
+
+            # Применяем мутацию
+            child = mutate(child)
+
+            new_population.append(child)
+
+        population = new_population  # заменяем популяцию
+
+        # Вывод прогресса каждые 20 поколений
+        if gen % 20 == 0 or gen == n_generations - 1:
+            print(f"Поколение {gen}: лучшая длина = {best_length:.2f}")
+
+    return best_route, best_length
+
+# 8. Запуск алгоритма
+print("\nЗапуск генетического алгоритма...")
+best_route, best_length = genetic_algorithm_tsp(
+    distance_matrix,
+    n_cities=10,
+    pop_size=30,
+    n_generations=100
+)
+
+# 9. Вывод результата
+print("\nЛучший найденный маршрут:")
+print(" → ".join(map(str, best_route)))
+print(f"Общая длина маршрута: {best_length:.2f}")
