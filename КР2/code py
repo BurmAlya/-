@@ -1,0 +1,147 @@
+import random
+
+def aco_knapsack(weights, values, W, n_ants, n_iter):
+    n = len(weights)
+    # Феромоны: матрица n×n, начальное значение 1.0
+    pheromone = [[1.0 for _ in range(n)] for _ in range(n)]
+    best_value = 0
+    best_items = []
+    
+    rho = 0.1  # коэффициент испарения феромонов
+    alpha = 1.0  # вес феромона в вероятностях
+    beta = 2.0   # вес удельной ценности
+
+    for iter in range(n_iter):
+        all_solutions = []
+        
+        # Каждый муравей строит своё решение
+        for ant in range(n_ants):
+            solution = []
+            total_weight = 0
+            
+            while True:
+                # Шаг 1: собираем список допустимых предметов
+                allowed = []
+                for i in range(n):
+                    if i not in solution and total_weight + weights[i] <= W:
+                        allowed.append(i)
+                
+                if not allowed:
+                    break  # Нет допустимых предметов — завершаем
+                
+                # Шаг 2: вычисляем вероятности выбора
+                probabilities = []
+                total_prob = 0.0
+                
+                for i in allowed:
+                    value_per_weight = values[i] / weights[i]
+                    prob = (pheromone[len(solution)][i] ** alpha) * (value_per_weight ** beta)
+                    probabilities.append(prob)
+                    total_prob += prob
+                
+                # Нормализуем вероятности
+                if total_prob > 0:
+                    probabilities = [p / total_prob for p in probabilities]
+                else:
+                    probabilities = [1.0 / len(allowed) for _ in allowed]
+                
+                # Шаг 3: стохастический выбор предмета (рулетка)
+                choice = random.choices(allowed, weights=probabilities)[0]
+                solution.append(choice)
+                total_weight += weights[choice]
+            
+            all_solutions.append((solution, sum(values[i] for i in solution)))
+        
+        # Обновление феромонов
+        # 1. Испарение
+        for i in range(n):
+            for j in range(n):
+                pheromone[i][j] *= (1 - rho)
+        
+        # 2. Усиление на лучших путях
+        current_best_value = max(sol[1] for sol in all_solutions)
+        current_best_solutions = [sol[0] for sol in all_solutions if sol[1] == current_best_value]
+        
+        for solution in current_best_solutions:
+            for pos, item in enumerate(solution):
+                pheromone[pos][item] += current_best_value / len(current_best_solutions)
+        
+        # Обновление глобального лучшего решения
+        if current_best_value > best_value:
+            best_value = current_best_value
+            best_items = current_best_solutions[0]
+    
+    return best_items, best_value
+
+# Ввод данных с клавиатуры
+print("Введите данные для задачи о рюкзаке:")
+n = int(input("Количество предметов: "))
+
+weights = []
+values = []
+
+for i in range(n):
+    w = float(input(f"Вес предмета {i+1}: "))
+    v = float(input(f"Ценность предмета {i+1}: "))
+    weights.append(w)
+    values.append(v)
+
+W = float(input("Вместимость рюкзака: "))
+n_ants = int(input("Количество муравьёв: "))
+n_iter = int(input("Количество итераций: "))
+
+# Запуск алгоритма
+best_items, best_value = aco_knapsack(weights, values, W, n_ants, n_iter)
+
+# Вывод результата
+print("\nРезультат:")
+print(f"Выбранные предметы (индексы): {best_items}")
+print(f"Общая ценность: {best_value}")
+print(f"Общий вес: {sum(weights[i] for i in best_items)}")
+
+
+
+ВЫВОД
+Введите данные для задачи о рюкзаке:
+Количество предметов: 3
+Вес предмета 1: 3
+Ценность предмета 1: 2
+Вес предмета 2: 2
+Ценность предмета 2: 4
+Вес предмета 3: 2
+Ценность предмета 3: 3
+Вместимость рюкзака: 5
+Количество муравьёв: 7
+Количество итераций: 5
+
+Результат:
+Выбранные предметы (индексы): [1, 2]
+Общая ценность: 7.0
+Общий вес: 4.0
+
+
+[Execution Finished]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
